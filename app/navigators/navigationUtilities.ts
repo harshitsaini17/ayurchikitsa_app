@@ -8,8 +8,8 @@ import {
 import Config from "../config"
 import type { PersistNavigationConfig } from "../config/config.base"
 import { useIsMounted } from "../utils/useIsMounted"
-import type { AppStackParamList, NavigationProps } from "./AppNavigator"
-
+import type { NavigationProps } from "./AppNavigator"
+import { AppStackParamList } from "./AppNavigator"
 import * as storage from "../utils/storage"
 
 type Storage = typeof storage

@@ -23,12 +23,23 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/app-icon-android-adaptive-foreground.png",
         "backgroundImage": "./assets/images/app-icon-android-adaptive-background.png"
-      }
+      },
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "ios": {
       "icon": "./assets/images/app-icon-ios.png",
       "supportsTablet": true,
-      "bundleIdentifier": "com.ayurchikitsa"
+      "bundleIdentifier": "com.ayurchikitsa",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to take photos for skin analysis.",
+        "NSPhotoLibraryUsageDescription": "This app accesses your photos to analyze skin conditions.",
+        "NSPhotoLibraryAddUsageDescription": "This app saves analyzed photos to your library."
+      }
     },
     "web": {
       "favicon": "./assets/images/app-icon-web-favicon.png",
@@ -36,6 +47,13 @@
     },
     "plugins": [
       "expo-localization",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to analyze skin conditions.",
+          "cameraPermission": "The app uses the camera to take photos for skin analysis."
+        }
+      ],
       "expo-font",
       [
         "expo-splash-screen",
@@ -49,6 +67,12 @@
     ],
     "experiments": {
       "tsconfigPaths": true
+    },
+    "extra": {
+      "developmentUrl": "http://172.31.118.105:8000",
+      "eas": {
+        "projectId": "58111cc5-43e2-4a40-9e67-6d70a7a692fe"
+      }
     }
   },
   "ignite": {

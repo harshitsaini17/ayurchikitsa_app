@@ -1,40 +1,21 @@
-/**
- * The app navigator (formerly "AppNavigator" and "MainNavigator") is used for the primary
- * navigation flows of your app.
- * Generally speaking, it will contain an auth flow (registration, login, forgot password)
- * and a "main" flow which the user will use once logged in.
- */
-import { NavigationContainer } from "@react-navigation/native"
+
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import * as Screens from "@/screens"
 import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
+import Icon from "react-native-vector-icons/FontAwesome5"
 import { ComponentProps } from "react"
 
-/**
- * This type allows TypeScript to know what routes are defined in this navigator
- * as well as what properties (if any) they might take when navigating to them.
- *
- * If no params are allowed, pass through `undefined`. Generally speaking, we
- * recommend using your MobX-State-Tree store(s) to keep application state
- * rather than passing state through navigation params.
- *
- * For more information, see this documentation:
- *   https://reactnavigation.org/docs/params/
- *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
- *   https://reactnavigation.org/docs/typescript/#organizing-types
- */
 export type AppStackParamList = {
   Welcome: undefined
-  // 🔥 Your screens go here
+  Upload: undefined
+  Chat: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
-/**
- * This is a list of all the route names that will exit the app if the back button
- * is pressed while in that screen. Only affects Android.
- */
 const exitRoutes = Config.exitRoutes
 
 export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStackScreenProps<
@@ -42,8 +23,7 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
   T
 >
 
-// Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createNativeStackNavigator<AppStackParamList>()
+const Tab = createBottomTabNavigator<AppStackParamList>()
 
 const AppStack = () => {
   const {
@@ -51,19 +31,47 @@ const AppStack = () => {
   } = useAppTheme()
 
   return (
-    <Stack.Navigator
+    <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        navigationBarColor: colors.background,
-        contentStyle: {
+        tabBarInactiveTintColor: colors.palette.secondary500,
+        tabBarActiveTintColor: colors.text,
+        tabBarStyle: {
           backgroundColor: colors.background,
         },
       }}
     >
-      <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-      {/** 🔥 Your screens go here */}
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
-    </Stack.Navigator>
+      {/* <Tab.Screen
+        name="Welcome"
+        component={Screens.WelcomeScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" color={color} size={size} />
+          ),
+          title: "Welcome",
+        }}
+      /> */}
+      <Tab.Screen
+        name="Chat"
+        component={Screens.ChatScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="comments" color={color} size={size} />
+          ),
+          title: "Chat",
+        }}
+      />
+      <Tab.Screen
+        name="Upload"
+        component={Screens.UploadScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="upload" color={color} size={size} />
+          ),
+          title: "Upload",
+        }}
+      />
+    </Tab.Navigator>
   )
 }
 
@@ -77,7 +85,7 @@ export const AppNavigator = (props: NavigationProps) => {
 
   return (
     <ThemeProvider value={{ themeScheme, setThemeContextOverride }}>
-      <NavigationContainer ref={navigationRef} theme={navigationTheme} {...props}>
+      <NavigationContainer  ref={navigationRef} theme={navigationTheme} {...props}>
         <AppStack />
       </NavigationContainer>
     </ThemeProvider>
